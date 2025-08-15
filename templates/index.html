@@ -1,0 +1,97 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="grid grid-cols-1 lg:grid-cols-3 gap-4">
+  <section class="p-4 rounded-2xl bg-slate-900/60 ring-1 ring-slate-700/60">
+    <h2 class="text-lg font-semibold mb-2 text-sky-300">Estado (tiempo real)</h2>
+    <dl class="grid grid-cols-2 gap-2 text-sm">
+      <div><dt class="text-slate-400">Año simulado</dt><dd id="year" class="font-mono text-slate-100">—</dd></div>
+      <div><dt class="text-slate-400">Personas vivas</dt><dd id="living" class="font-mono text-slate-100">—</dd></div>
+      <div><dt class="text-slate-400">Total personas</dt><dd id="people" class="font-mono text-slate-100">—</dd></div>
+      <div><dt class="text-slate-400">Uniones activas</dt><dd id="unions" class="font-mono text-slate-100">—</dd></div>
+      <div><dt class="text-slate-400">Familias</dt><dd id="families" class="font-mono text-slate-100">—</dd></div>
+      <div><dt class="text-slate-400">Versión</dt><dd id="version" class="font-mono text-slate-100">—</dd></div>
+    </dl>
+  </section>
+
+  <section class="p-4 rounded-2xl bg-slate-900/60 ring-1 ring-slate-700/60">
+    <h2 class="text-lg font-semibold mb-2 text-emerald-300">Agregar familia</h2>
+    <form id="familyForm" class="space-y-2">
+      <label class="block">
+        <span class="text-slate-300 text-sm">Nombre de familia</span>
+        <input name="name" class="mt-1 w-full px-3 py-2 rounded-xl bg-slate-900 ring-1 ring-slate-700 text-slate-100 focus:outline-none focus:ring-2 focus:ring-emerald-400" placeholder="Apellidos o alias" required>
+      </label>
+      <button type="submit" class="w-full py-2 rounded-xl bg-emerald-500 hover:bg-emerald-600 text-emerald-50 font-medium">Crear</button>
+    </form>
+    <pre id="familyOut" class="mt-2 text-xs p-2 rounded-xl bg-slate-950/60 ring-1 ring-slate-800 overflow-auto max-h-40"></pre>
+  </section>
+
+  <section class="p-4 rounded-2xl bg-slate-900/60 ring-1 ring-slate-700/60">
+    <h2 class="text-lg font-semibold mb-2 text-fuchsia-300">Agregar persona</h2>
+    <form id="personForm" class="grid grid-cols-2 gap-2">
+      <label class="col-span-1">
+        <span class="text-slate-300 text-sm">Cédula</span>
+        <input name="cedula" class="mt-1 w-full px-3 py-2 rounded-xl bg-slate-900 ring-1 ring-slate-700 text-slate-100">
+      </label>
+      <label class="col-span-1">
+        <span class="text-slate-300 text-sm">Nombre</span>
+        <input name="nombre" required class="mt-1 w-full px-3 py-2 rounded-xl bg-slate-900 ring-1 ring-slate-700 text-slate-100">
+      </label>
+      <label>
+        <span class="text-slate-300 text-sm">Edad</span>
+        <input type="number" name="edad" min="0" value="20" class="mt-1 w-full px-3 py-2 rounded-xl bg-slate-900 ring-1 ring-slate-700 text-slate-100">
+      </label>
+      <label>
+        <span class="text-slate-300 text-sm">Género</span>
+        <select name="genero" class="mt-1 w-full px-3 py-2 rounded-xl bg-slate-900 ring-1 ring-slate-700 text-slate-100"><option>M</option><option>F</option></select>
+      </label>
+      <label>
+        <span class="text-slate-300 text-sm">Provincia</span>
+        <select name="provincia" class="mt-1 w-full px-3 py-2 rounded-xl bg-slate-900 ring-1 ring-slate-700 text-slate-100"><option>SJ</option><option>AL</option><option>CA</option><option>HE</option><option>LI</option><option>PU</option><option>GU</option></select>
+      </label>
+      <label>
+        <span class="text-slate-300 text-sm">Estado civil</span>
+        <select name="estado_civil" class="mt-1 w-full px-3 py-2 rounded-xl bg-slate-900 ring-1 ring-slate-700 text-slate-100"><option>soltero</option><option>casado</option><option>viudo</option><option>divorciado</option></select>
+      </label>
+      <label class="col-span-2">
+        <span class="text-slate-300 text-sm">Intereses (coma)</span>
+        <input name="intereses" placeholder="música,cine,arte" class="mt-1 w-full px-3 py-2 rounded-xl bg-slate-900 ring-1 ring-slate-700 text-slate-100">
+      </label>
+      <label class="col-span-2">
+        <span class="text-slate-300 text-sm">Padres (cédulas separadas por coma)</span>
+        <input name="padres" placeholder="123,456" class="mt-1 w-full px-3 py-2 rounded-xl bg-slate-900 ring-1 ring-slate-700 text-slate-100">
+      </label>
+      <label class="col-span-2">
+        <span class="text-slate-300 text-sm">Familia ID (opcional)</span>
+        <input name="familia_id" class="mt-1 w-full px-3 py-2 rounded-xl bg-slate-900 ring-1 ring-slate-700 text-slate-100">
+      </label>
+      <button type="submit" class="col-span-2 w-full py-2 rounded-xl bg-fuchsia-500 hover:bg-fuchsia-600 text-fuchsia-50 font-medium">Crear</button>
+    </form>
+    <pre id="personOut" class="mt-2 text-xs p-2 rounded-xl bg-slate-950/60 ring-1 ring-slate-800 overflow-auto max-h-40"></pre>
+  </section>
+</div>
+
+<section class="mt-4 p-4 rounded-2xl bg-slate-900/60 ring-1 ring-slate-700/60">
+  <div class="flex items-center justify-between gap-3 mb-2">
+    <h2 class="text-lg font-semibold text-sky-300">Árbol (vista rápida)</h2>
+    <button id="refreshTree" class="px-3 py-1.5 rounded-xl bg-sky-500 hover:bg-sky-600 text-sky-50 text-sm">Actualizar</button>
+  </div>
+  <div class="w-full overflow-auto ring-1 ring-slate-800 rounded-xl">
+    <img id="treeImg" src="/tree.svg" class="w-full" alt="Árbol genealógico">
+  </div>
+</section>
+
+<section class="mt-4 p-4 rounded-2xl bg-slate-900/60 ring-1 ring-slate-700/60">
+  <h2 class="text-lg font-semibold mb-2 text-emerald-300">Muestra de personas</h2>
+  <div class="overflow-auto rounded-xl ring-1 ring-slate-800">
+    <table class="min-w-full text-sm">
+      <thead class="bg-slate-800/60 text-slate-300">
+        <tr><th class="px-3 py-2 text-left">Cédula</th><th class="px-3 py-2 text-left">Nombre</th><th class="px-3 py-2">Edad</th><th class="px-3 py-2">Vivo</th><th class="px-3 py-2">Pareja</th><th class="px-3 py-2">#Hijos</th></tr>
+      </thead>
+      <tbody id="tbody" class="divide-y divide-slate-800 text-slate-100"></tbody>
+    </table>
+  </div>
+</section>
+{% endblock %}
+{% block scripts %}
+<script src="{{ url_for('static', filename='app.js') }}"></script>
+{% endblock %}

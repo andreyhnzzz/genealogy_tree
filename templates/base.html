@@ -1,0 +1,26 @@
+<!doctype html>
+<html lang="es" class="h-full bg-slate-950">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Árbol Genealógico – Real-time (Flask + SSE + Tailwind)</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="h-full text-slate-100">
+<header class="px-5 py-4 bg-slate-900/70 ring-1 ring-slate-800 sticky top-0 backdrop-blur">
+  <div class="max-w-6xl mx-auto">
+    <h1 class="text-xl font-semibold">Árbol Genealógico – Simulación en Tiempo Real</h1>
+    <p class="text-slate-400 text-sm">Flask + Tailwind (CDN) + SSE • relaciones inferidas automáticamente • sin archivos</p>
+  </div>
+</header>
+<main class="px-5 py-6">
+  <div class="max-w-6xl mx-auto">
+    {% block content %}{% endblock %}
+  </div>
+</main>
+<footer class="px-5 py-6 text-slate-500">
+  <div class="max-w-6xl mx-auto">&copy; UTN • IIQ 2025 • Demo educativa</div>
+</footer>
+{% block scripts %}{% endblock %}
+</body>
+</html>
